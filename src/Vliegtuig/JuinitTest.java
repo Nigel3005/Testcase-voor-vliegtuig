@@ -1,96 +1,68 @@
 package Vliegtuig;
+import Vliegtuig.Classes.*;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class JuinitTest {
-    private vliegtuig vliegtuig = new vliegtuig();
 
     @Test
-    public void testLaadGewichtPrijs() {
-        assertEquals(100, vliegtuig.laadGewichtPrijs(999), 0.1); //Equivalentieklasse 1
-        assertEquals(500, vliegtuig.laadGewichtPrijs(1000), 0.1); //Equivalentieklasse 2
-        assertEquals(2500, vliegtuig.laadGewichtPrijs(5000), 0.1); //Equivalentieklasse 3
+    public void toestemmingOpstijgen(){
+        Luchthaven schiphol = new Luchthaven();
 
-        assertEquals(100, vliegtuig.laadGewichtPrijs(499), 0.1); //Equivalentieklasse 4
-        assertEquals(500, vliegtuig.laadGewichtPrijs(1299), 0.1); //Equivalentieklasse 5
-        assertEquals(2500, vliegtuig.laadGewichtPrijs(5999), 0.1); //Equivalentieklasse 6
+        assertFalse(schiphol.toestemmingOpstijgen(2500, 25, true));
+        assertFalse(schiphol.toestemmingOpstijgen(2500, 55, false));
+        assertFalse(schiphol.toestemmingOpstijgen(850, 25, false));
 
-        assertEquals(100, vliegtuig.laadGewichtPrijs(888), 0.1); //Equivalentieklasse 7
-        assertEquals(500, vliegtuig.laadGewichtPrijs(1200), 0.1); //Equivalentieklasse 8
-        assertEquals(2500, vliegtuig.laadGewichtPrijs(10000), 0.1); //Equivalentieklasse 9
+        assertTrue(schiphol.toestemmingOpstijgen(850, 25, true));
+        assertTrue(schiphol.toestemmingOpstijgen(2500, 55, true));
+        assertTrue(schiphol.toestemmingOpstijgen(850, 55, true));
     }
 
     @Test
-    public void testToestemming(){
-        assertEquals(vliegtuig.magOpstijgen(true, 10, 1000), false); //Equivalentieklasse 1
-        assertEquals(vliegtuig.magOpstijgen(true, 25, 999), true); //Equivalentieklasse 2
-        assertEquals(vliegtuig.magOpstijgen(true, 81, 1000), true); //Equivalentieklasse 3
-        assertEquals(vliegtuig.magOpstijgen(true, 75, 999), true); //Equivalentieklasse 4
-        assertEquals(vliegtuig.magOpstijgen(false, 20, 1000), false); //Equivalentieklasse 5
-        assertEquals(vliegtuig.magOpstijgen(false, 18, 999), false); //Equivalentieklasse 6
-        assertEquals(vliegtuig.magOpstijgen(false, 54, 1000), false); //Equivalentieklasse 7
-        assertEquals(vliegtuig.magOpstijgen(false, 90, 999), false); //Equivalentieklasse 8
-        assertEquals(vliegtuig.magOpstijgen(true, 60, 1000), true); //Equivalentieklasse 9
+    public void landindPrijsOBVGewicht() {
+        Luchthaven schiphol = new Luchthaven();
+
+        Vliegtuig v0 = new Vliegtuig(0, Landen.Anders, 0, false);
+        Vliegtuig v1 = new Vliegtuig(500, Landen.Anders, 0, false);
+        Vliegtuig v2 = new Vliegtuig(999, Landen.Anders, 0, false);
+        Vliegtuig v3 = new Vliegtuig(1000, Landen.Anders, 0, false);
+        Vliegtuig v4 = new Vliegtuig(1750, Landen.Anders, 0, false);
+        Vliegtuig v5 = new Vliegtuig(4999, Landen.Anders, 0, false);
+        Vliegtuig v6 = new Vliegtuig(5000, Landen.Anders, 0, false);
+        Vliegtuig v7 = new Vliegtuig(5050, Landen.Anders, 0, false);
+
+        assertEquals(100, schiphol.getPrijsBijLanden(v0), 0.001);
+        assertEquals(100, schiphol.getPrijsBijLanden(v1), 0.001);
+        assertEquals(100, schiphol.getPrijsBijLanden(v2), 0.001);
+        assertEquals(500, schiphol.getPrijsBijLanden(v3), 0.001);
+        assertEquals(500, schiphol.getPrijsBijLanden(v4), 0.001);
+        assertEquals(500, schiphol.getPrijsBijLanden(v5), 0.001);
+        assertEquals(2500, schiphol.getPrijsBijLanden(v6), 0.001);
+        assertEquals(2500, schiphol.getPrijsBijLanden(v7), 0.001);
     }
 
     @Test
-    public void TestAll(){
-        assertEquals(1149.5, vliegtuig.landPrijs(999, 2, true, true), 0.01); //Equivalentieklasse 1
-        assertEquals(1550.0, vliegtuig.landPrijs(1001, 2, true, false), 0.01); //Equivalentieklasse 2
-        assertEquals(907.5, vliegtuig.landPrijs(2000, 2, false, true), 0.01); //Equivalentieklasse 3
-        assertEquals(750.0, vliegtuig.landPrijs(3000, 2, false, false), 0.01); //Equivalentieklasse 4
-        assertEquals(1573.0, vliegtuig.landPrijs(4000, 1, true, true), 0.01); //Equivalentieklasse 5
-        assertEquals(3300.0, vliegtuig.landPrijs(5000, 1, true, false), 0.01); //Equivalentieklasse 6
-        assertEquals(3025.0, vliegtuig.landPrijs(6000, 1, false, true), 0.01); //Equivalentieklasse 7
-        assertEquals(2500.0, vliegtuig.landPrijs(7000, 1, false, false), 0.01); //Equivalentieklasse 8
-    }
+    public void getPrijs() {
+        Luchthaven schiphol = new Luchthaven();
 
-    @Test
-    public void testGetDecision() {
-        // Testcase 1
-        boolean result1 = getDecision(true, true, true);
-        assertTrue(result1);
+        Vliegtuig v0 = new Vliegtuig(500, Landen.Nederland, 1, true);
+        Vliegtuig v1 = new Vliegtuig(500, Landen.Anders, 40, false);
 
-        // Testcase 2
-        boolean result2 = getDecision(true, true, false);
-        assertTrue(result2);
+        Vliegtuig v2 = new Vliegtuig(1050, Landen.Nederland, 1, true);
+        Vliegtuig v3 = new Vliegtuig(1050, Landen.Anders, 50, false);
 
-        // Testcase 3
-        boolean result3 = getDecision(true, false, true);
-        assertTrue(result3);
+        Vliegtuig v4 = new Vliegtuig(6500, Landen.Nederland, 1, true);
+        Vliegtuig v5 = new Vliegtuig(6500, Landen.Anders, 60, false);
 
-        // Testcase 4
-        boolean result4 = getDecision(true, false, false);
-        assertFalse(result4);
+        assertEquals(1089, schiphol.getPrijsBijLanden(v0), 0.001);
+        assertEquals(150, schiphol.getPrijsBijLanden(v1), 0.001);
 
-        // Testcase 5
-        boolean result5 = getDecision(false, true, true);
-        assertFalse(result5);
+        assertEquals(1573, schiphol.getPrijsBijLanden(v2), 0.001);
+        assertEquals(750, schiphol.getPrijsBijLanden(v3), 0.001);
 
-        // Testcase 6
-        boolean result6 = getDecision(false, true, false);
-        assertFalse(result6);
-
-        // Testcase 7
-        boolean result7 = getDecision(false, false, true);
-        assertFalse(result7);
-
-        // Testcase 8
-        boolean result8 = getDecision(false, false, false);
-        assertFalse(result8);
-    }
-
-    private boolean getDecision(boolean conditionA, boolean conditionB, boolean conditionC) {
-        // Implementeer hier de logica om de waarde van D = <Decision> te bepalen
-        // Gebaseerd op de waarden van conditionA, conditionB en conditionC
-
-        boolean decision;
-
-        decision = conditionA && (conditionB || conditionC);
-
-        // Return de waarde van D
-        return decision;
+        assertEquals(3993, schiphol.getPrijsBijLanden(v4), 0.001);
+        assertEquals(3750, schiphol.getPrijsBijLanden(v5), 0.001);
     }
 }
 
